@@ -1,0 +1,71 @@
+const Student = require('../model/student-collection.js')
+const express = require('express')
+const router = express.Router()
+//create student
+router.post('/student',async(req,res)=>{
+	try{
+		console.log(req.body)
+	const user = new Student(req.body)
+	 const createUser = await user.save()
+	res.send(createUser)
+
+	}
+	catch(e){
+   res.send(e);
+	}
+	
+})
+//get user name 
+router.get('/student',async(req,res)=>{
+	try{
+		const userData = await Student.find();
+		res.send(userData)
+
+	}
+	catch(e){
+		res.send(e)
+
+	}
+
+})
+
+//update by id
+router.patch('/student/:id',async (req,res)=>{
+	try{
+		
+	    const updateStudent = await 
+	Student.findByIdAndUpdate(req.params.id,{$set:{email:req.body}});
+		res.send(updateStudent)
+	}
+	catch(e){
+		res.send(e)
+	}
+	
+
+})
+
+//delete by id
+router.delete('/student/:id', async(req,res)=>{
+	try{
+		
+		const deleteStudent = await Student.findByIdAndDelete(req.params.id);
+		if(!req.params.id){
+		return	res.status(400).send()
+		}else{
+			return res.send(deleteStudent)
+		}
+
+	}
+	catch(e){
+res.send(e)
+	}
+})
+
+
+
+
+		
+
+
+
+ module.exports = router
